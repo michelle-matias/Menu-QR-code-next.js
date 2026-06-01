@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu4U — QR code</title>
+  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="QR.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="dashboard-body">
+
+    <!-- HEADER -->
+    <header class="top-bar">
+        <div class="logo">
+            <i class="fas fa-qrcode"></i> Menu4U
+        </div>
+        <div class="nav-right">
+            <a href="../estatistics/estatistics.html" class="btn-home-nav">Main Page</a>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <!-- Barra Lateral -->
+         <aside class="sidebar">
+            <div class="section-title">MANAGEMENT</div>
+            <ul>
+                <li><a href="../estatistics/estatistics.html"><i class="fas fa-chart-line"></i> Estatístics</a></li>
+                <li><a href="../menu_editor/menu.html"><i class="fas fa-utensils"></i> Menu editor</a></li>
+                <li class="active"><a href="../QR-Code/QR.html"><i class="fas fa-qrcode"></i> QR code</a></li>
+                <li><a href="../orders/order.html"><i class="fas fa-clipboard-list"></i> Orders</a></li>
+            </ul>
+
+            <div class="section-title">ACCOUNT</div>
+            <ul>
+                <li><a href="#"><i class="far fa-user"></i> Profile</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </aside>
+
+
+      <!-- MAIN CONTENT -->
+      <main class="content-area">
+        <h1>QR code</h1>
+
+        <div class="m4u-grid">
+
+          <!-- FORM CARD -->
+          <div class="m4u-card">
+            <div class="m4u-field">
+              <label class="m4u-label" for="qr-name">Nome / Mesa</label>
+              <input class="m4u-input" id="qr-name" type="text" placeholder="ex: Mesa 4, Esplanada A…" value="Mesa 4">
+            </div>
+            <div class="m4u-field">
+              <label class="m4u-label" for="qr-url">URL do menu</label>
+              <input class="m4u-input" id="qr-url" type="text" value="menuqr.app/ocantinho/mesa4">
+            </div>
+            <div class="m4u-field">
+              <label class="m4u-label">Logótipo (opcional)</label>
+              <div class="m4u-logo-drop" id="logo-area">
+                <input type="file" accept="image/*" id="logo-file" aria-label="Carregar logótipo">
+                <img id="lmo-preview" alt="logo preview">
+                <svg id="lmo-icon" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" width="24" height="24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <p class="m4u-logo-drop-label" id="lmo-label">Clique ou arraste o logo</p>
+              </div>
+            </div>
+            <div class="m4u-color-row">
+              <div class="m4u-field">
+                <label class="m4u-label" for="c-fg">Cor do QR</label>
+                <div class="m4u-color-wrap">
+                  <input type="color" id="c-fg" value="#1a1a1a" aria-label="Cor principal">
+                  <span class="m4u-color-hex" id="hex-fg">#1a1a1a</span>
+                </div>
+              </div>
+              <div class="m4u-field">
+                <label class="m4u-label" for="c-bg">Fundo</label>
+                <div class="m4u-color-wrap">
+                  <input type="color" id="c-bg" value="#ffffff" aria-label="Cor de fundo">
+                  <span class="m4u-color-hex" id="hex-bg">#ffffff</span>
+                </div>
+              </div>
+            </div>
+            <button class="m4u-btn-primary" id="btn-gen">Gerar QR code</button>
+          </div>
+
+          <!-- PREVIEW CARD -->
+          <div class="m4u-qr-card">
+            <div class="m4u-qr-wrap">
+              <canvas id="qr-canvas" width="160" height="160" aria-label="QR code gerado"></canvas>
+              <p class="m4u-qr-caption">Scan to view the menu &amp; order</p>
+              <span class="m4u-qr-url-pill" id="prev-url">menuqr.app/ocantinho/mesa4</span>
+            </div>
+            <div class="m4u-btn-row">
+              <button class="m4u-btn-sec" id="btn-png">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                PNG
+              </button>
+              <button class="m4u-btn-sec" id="btn-svg">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                SVG
+              </button>
+              <button class="m4u-btn-sec" id="btn-print">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                Imprimir
+              </button>
+            </div>
+            <div class="m4u-stats2">
+              <div class="m4u-stat2">
+                <p class="m4u-stat2-label">Total scans</p>
+                <p class="m4u-stat2-val">1,842</p>
+              </div>
+              <div class="m4u-stat2">
+                <p class="m4u-stat2-label">Orders via QR</p>
+                <p class="m4u-stat2-val">67%</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE CARD -->
+          <div class="m4u-table-card">
+            <p class="m4u-table-title">QR codes gerados</p>
+            <table class="m4u-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>URL</th>
+                  <th>Scans</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mesa 1</td>
+                  <td class="url-cell">menuqr.app/ocantinho/mesa1</td>
+                  <td>312</td>
+                  <td><span class="m4u-badge m4u-badge-active"><span class="m4u-dot m4u-dot-active"></span>Ativo</span></td>
+                  <td><button class="m4u-dl-btn" data-url="menuqr.app/ocantinho/mesa1" data-name="Mesa 1">↓</button></td>
+                </tr>
+                <tr>
+                  <td>Mesa 2</td>
+                  <td class="url-cell">menuqr.app/ocantinho/mesa2</td>
+                  <td>287</td>
+                  <td><span class="m4u-badge m4u-badge-active"><span class="m4u-dot m4u-dot-active"></span>Ativo</span></td>
+                  <td><button class="m4u-dl-btn" data-url="menuqr.app/ocantinho/mesa2" data-name="Mesa 2">↓</button></td>
+                </tr>
+                <tr>
+                  <td>Esplanada A</td>
+                  <td class="url-cell">menuqr.app/ocantinho/esplA</td>
+                  <td>521</td>
+                  <td><span class="m4u-badge m4u-badge-active"><span class="m4u-dot m4u-dot-active"></span>Ativo</span></td>
+                  <td><button class="m4u-dl-btn" data-url="menuqr.app/ocantinho/esplA" data-name="Esplanada A">↓</button></td>
+                </tr>
+                <tr>
+                  <td>Takeaway</td>
+                  <td class="url-cell">menuqr.app/ocantinho/takeaway</td>
+                  <td>—</td>
+                  <td><span class="m4u-badge m4u-badge-draft"><span class="m4u-dot m4u-dot-draft"></span>Rascunho</span></td>
+                  <td><button class="m4u-dl-btn" data-url="menuqr.app/ocantinho/takeaway" data-name="Takeaway">↓</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+  <!-- QRCode.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script type="module" src="../header.js"></script>
+  <script src="QR.js"></script>
+</body>
+</html>

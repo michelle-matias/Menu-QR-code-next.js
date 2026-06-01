@@ -1,0 +1,383 @@
+/* Layout Geral */
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body,
+.dashboard-body {
+    background-color: #fdfbe8;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-body {
+    width: 100%;
+}
+
+.top-bar {
+    background-color: #5d7a5d;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.btn-home-nav {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.main-layout {
+    display: flex;
+    flex: 1;
+    min-height: calc(100vh - 70px);
+}
+
+.content-area {
+    flex: 1;
+    padding: 30px;
+    background: #fdfbe8;
+    width: 100%;
+}
+
+.content-area h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.header-inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: white;
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 0;
+    margin-bottom: 6px;
+}
+
+.sidebar li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 10px;
+    color: #555;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.sidebar li a:hover {
+    background: #f5f2e8;
+    color: #2a2a2a;
+}
+
+.sidebar li.active a {
+    background-color: #f0f4f0;
+    color: #5d7a5d;
+    font-weight: bold;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+button {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: black;
+    color: white;
+}
+
+.btn-secondary {
+    background: white;
+    border: 1px solid #ccc;
+}
+
+/* Category & Menu Sections */
+.category-section {
+    margin-bottom: 45px;
+    width: 100%;
+}
+
+.category-title {
+    font-size: 1.6rem;
+    color: #2e3d2e;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid #5d7a5d;
+    padding-bottom: 8px;
+    display: inline-block;
+}
+
+.dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+    gap: 25px;
+    width: 100%;
+}
+
+/* Dish Card Styles */
+.dish-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0eedb;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s ease;
+}
+
+.dish-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(93, 122, 93, 0.1);
+}
+
+.dish-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-bottom: 1px solid #f0eedb;
+}
+
+/* Centered Dish Info */
+.dish-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.dish-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.dish-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2e3d2e;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.dish-price {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #5d7a5d;
+    margin-top: 4px;
+}
+
+.dish-desc {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 0 0 20px 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+.dish-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-top: auto;
+}
+
+.dish-actions button {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 4px !important; /* Square corners to ensure no text clipping */
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.dish-actions .btn-secondary {
+    background: #f5f2e8;
+    color: #444;
+    border: 1px solid #ddd;
+}
+
+.dish-actions .btn-secondary:hover {
+    background: #e8e4d8;
+}
+
+.dish-actions .btn-danger {
+    background: #e74c3c;
+    color: white;
+    border: none;
+}
+
+.dish-actions .btn-danger:hover {
+    background: #c0392b;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 25px;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.input-group input,
+.input-group textarea,
+.input-group select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 240px);
+    text-align: center;
+    color: #666;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: #5d7a5d;
+    margin-bottom: 20px;
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+.empty-state p {
+    font-size: 1.25rem;
+    color: #555;
+    margin: 0;
+    font-weight: 500;
+}
+
+@keyframes floatIcon {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+#qr {
+    margin-top: 20px;
+}
+
+
+@media(max-width:768px){
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .buttons {
+        width: 100%;
+    }
+
+    .buttons button {
+        flex: 1;
+    }
+}

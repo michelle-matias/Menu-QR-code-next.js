@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu4U - Login</title>
+  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="login-page">
+
+  <!-- Navbar igual à da create.jpg -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="../main/main.html">
+        <i class="fas fa-qrcode"></i> Menu4U
+      </a>
+    </div>
+    <a href="../main/main.html" class="btn-main-page">Home Page</a>
+  </header>
+
+  <main class="login-container">
+    <div class="login-card">
+      <div class="card-header">
+        <i class="fas fa-qrcode icon-green"></i>
+        <h1>Menu4U</h1>
+        <p>Sign in to manage your restaurant</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" placeholder="exemplo@email.pt" required>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn-signin-active">Sign in</button>
+      </form>
+
+      <div class="card-footer">
+        <a href="#">Forgot password?</a> · <a href="../Create account/Create.html">Create account</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../config.js"></script>
+  <script src="login.js" type="module"></script> 
+</body>
+
+</html>
