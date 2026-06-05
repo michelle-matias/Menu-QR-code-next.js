@@ -1,51 +1,54 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
 import '@/styles/auth.css';
 
-export default function Login() {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/estatistics';
   const { user, loading: authLoading } = useAuth();
 
   useEffect(() => {
     if (!authLoading && user) {
-      router.push('/dashboard');
+      router.replace(redirect);
     }
-  }, [user, authLoading, router]);
+  }, [user, authLoading, router, redirect]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+
     if (!email || !password) {
-      alert('Por favor, preencha email e password.');
+      setError('Por favor, preencha email e password.');
       return;
     }
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) {
-        alert('Login falhou: ' + error.message);
+      if (signInError) {
+        setError('Login falhou: ' + signInError.message);
+        setLoading(false);
         return;
       }
 
-      if (data.user) {
-        alert('Login com sucesso! Bem-vindo, ' + data.user.email);
-        router.push('/dashboard');
-      }
+      // Full navigation to ensure session cookies are recognized
+      window.location.href = redirect;
     } catch (err: any) {
-      alert('Ocorreu um erro inesperado: ' + err.message);
-    } finally {
+      setError('Ocorreu um erro inesperado: ' + err.message);
       setLoading(false);
     }
   };
@@ -73,6 +76,7 @@ export default function Login() {
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>
+            {error && <p className="auth-error">{error}</p>}
             <div className="auth-input-group">
               <label>Email</label>
               <input 
@@ -105,5 +109,13 @@ export default function Login() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <Login />
+    </Suspense>
   );
 }

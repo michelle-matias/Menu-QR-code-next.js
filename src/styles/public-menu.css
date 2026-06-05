@@ -1,0 +1,216 @@
+/* Public Menu Page Styles */
+
+.public-menu-body {
+  background: #fdfbe8;
+  min-height: 100vh;
+  font-family: 'Jost', sans-serif;
+  color: #2a2a2a;
+  padding-bottom: 60px;
+}
+
+.public-menu-header {
+  background: #5d7a5d;
+  color: white;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.public-menu-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.public-menu-header p {
+  margin: 8px 0 0;
+  opacity: 0.85;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.public-menu-main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Category Pills */
+.category-pills {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+  scrollbar-width: none;
+}
+
+.category-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.category-pill {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  background: white;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.category-pill.active {
+  background: #5d7a5d;
+  color: white;
+}
+
+/* Empty State */
+.public-menu-empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+}
+
+.public-menu-empty i {
+  font-size: 2.5rem;
+  color: #5d7a5d;
+  margin-bottom: 15px;
+}
+
+.public-menu-empty p {
+  font-size: 1.15rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Dish Grid */
+.public-dishes-grid {
+  display: grid;
+  gap: 20px;
+}
+
+/* Dish Card */
+.public-dish-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  display: flex;
+  border: 1px solid rgba(0, 0, 0, 0.01);
+  transition: transform 0.2s ease;
+}
+
+.public-dish-card:hover {
+  transform: translateY(-2px);
+}
+
+.public-dish-card img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.public-dish-info {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.public-dish-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.public-dish-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: #2a2a2a;
+}
+
+.public-dish-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #5d7a5d;
+  white-space: nowrap;
+}
+
+.public-dish-desc {
+  font-size: 0.9rem;
+  color: #666666;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.public-dish-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.public-dish-category {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  background: #f5f2e8;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* Loading */
+.public-menu-loading {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  background: #fdfbe8;
+  font-family: 'Jost', sans-serif;
+}
+
+.public-menu-loading div {
+  text-align: center;
+}
+
+.public-menu-loading i {
+  font-size: 3.5rem;
+  color: #5d7a5d;
+  margin-bottom: 1rem;
+}
+
+.public-menu-loading p {
+  color: #5d7a5d;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .public-dish-card {
+    flex-direction: column;
+  }
+
+  .public-dish-card img {
+    width: 100%;
+    height: 180px;
+  }
+}

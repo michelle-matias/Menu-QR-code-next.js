@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
@@ -13,12 +13,13 @@ export default function DashboardLayout({
 }) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/login');
+      router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, pathname]);
 
   if (loading) {
     return (

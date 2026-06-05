@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
+import { getOrders, updateOrderStatus } from '@/lib/database';
 import { Order } from '@/types';
 import '@/styles/orders.css';
 
@@ -15,31 +16,24 @@ export default function OrdersManagement() {
   const [realtimeStatus, setRealtimeStatus] = useState<'connected' | 'reconnecting'>('reconnecting');
   const [isPrinterConnected, setIsPrinterConnected] = useState(false);
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('pedidos')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('id', { ascending: false });
-
-      if (error) throw error;
-      setOrders(data || []);
+      const data = await getOrders(user.id);
+      setOrders(data);
     } catch (err: any) {
       console.error('Error fetching orders:', err.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
 
     fetchOrders();
 
-    // Setup real-time updates with Supabase subscriptions
     const channel = supabase
       .channel(`orders:user:${user.id}`)
       .on(
@@ -50,48 +44,29 @@ export default function OrdersManagement() {
           table: 'pedidos',
           filter: `user_id=eq.${user.id}`,
         },
-        (payload) => {
-          console.log('Realtime order update:', payload);
-          // Reload orders list when database changes
-          fetchOrders();
-        }
+        () => fetchOrders()
       )
       .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          setRealtimeStatus('connected');
-        } else {
-          setRealtimeStatus('reconnecting');
-        }
+        setRealtimeStatus(status === 'SUBSCRIBED' ? 'connected' : 'reconnecting');
       });
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [user]);
+    return () => { supabase.removeChannel(channel); };
+  }, [user, fetchOrders]);
 
   const handleStatusToggle = async (orderId: number, currentStatus: string | null) => {
     if (!user) return;
 
     const newStatus = currentStatus === 'done' ? 'pending' : 'done';
 
-    // Optimistic UI updates
     setOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
     );
 
     try {
-      const { error } = await supabase
-        .from('pedidos')
-        .update({ status: newStatus })
-        .eq('id', orderId)
-        .eq('user_id', user.id);
-
-      if (error) {
-        throw error;
-      }
+      await updateOrderStatus(orderId, user.id, newStatus as 'pending' | 'done');
     } catch (err: any) {
       alert('Erro ao atualizar estado: ' + err.message);
-      fetchOrders(); // Rollback on error
+      fetchOrders();
     }
   };
 

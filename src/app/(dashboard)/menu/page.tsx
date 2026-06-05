@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
-import { supabase } from '@/lib/supabase';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { getDishes, createDish, updateDish, deleteDish } from '@/lib/database';
+import { uploadDishImage } from '@/lib/storage';
 import { Dish, DishCategory } from '@/types';
 import '@/styles/menu.css';
 
@@ -27,28 +28,22 @@ export default function MenuEditor() {
 
   const categories: DishCategory[] = ['Starters', 'Mains', 'Desserts', 'Drinks'];
 
-  const fetchDishes = async () => {
+  const fetchDishes = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('dishes')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      setDishes(data || []);
+      const data = await getDishes(user.id);
+      setDishes(data);
     } catch (err: any) {
       console.error('Error fetching dishes:', err.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchDishes();
-  }, [user]);
+  }, [fetchDishes]);
 
   const handleOpenModal = (dish: Dish | null = null) => {
     setEditingDish(dish);
@@ -105,29 +100,10 @@ export default function MenuEditor() {
     let image_url = editingDish?.image_url || null;
 
     try {
-      // 1. Upload image if a new file was chosen
       if (dishImageFile) {
-        const fileExt = dishImageFile.name.split('.').pop();
-        const fileName = `${Date.now()}.${fileExt}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('dish-images')
-          .upload(fileName, dishImageFile);
-
-        if (uploadError) {
-          alert('Erro no envio da imagem: ' + uploadError.message);
-          setSaving(false);
-          return;
-        }
-
-        const { data: urlData } = supabase.storage
-          .from('dish-images')
-          .getPublicUrl(fileName);
-
-        image_url = urlData.publicUrl;
+        image_url = await uploadDishImage(dishImageFile);
       }
 
-      // 2. Build insertion/update payload
       const payload = {
         name: dishName.trim(),
         description: dishDesc.trim(),
@@ -137,21 +113,11 @@ export default function MenuEditor() {
         user_id: user.id,
       };
 
-      // 3. Save payload to supabase
-      let error;
       if (editingDish) {
-        ({ error } = await supabase
-          .from('dishes')
-          .update(payload)
-          .eq('id', editingDish.id)
-          .eq('user_id', user.id)); // Safety check
+        await updateDish(editingDish.id, user.id, payload);
       } else {
-        ({ error } = await supabase
-          .from('dishes')
-          .insert(payload));
+        await createDish(payload);
       }
-
-      if (error) throw error;
 
       handleCloseModal();
       fetchDishes();
@@ -166,13 +132,7 @@ export default function MenuEditor() {
     if (!user || !confirm('Deseja realmente apagar este prato?')) return;
 
     try {
-      const { error } = await supabase
-        .from('dishes')
-        .delete()
-        .eq('id', id)
-        .eq('user_id', user.id); // Scoped deletion safety
-
-      if (error) throw error;
+      await deleteDish(id, user.id);
       fetchDishes();
     } catch (err: any) {
       alert('Erro ao apagar prato: ' + err.message);
