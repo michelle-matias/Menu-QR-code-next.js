@@ -14,7 +14,7 @@ function Login() {
   const [error, setError] = useState('');
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/estatistics';
+  const redirect = searchParams.get('redirect') || '/dashboard';
   const { user, loading: authLoading } = useAuth();
 
   useEffect(() => {

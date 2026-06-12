@@ -99,6 +99,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s;
+    min-width: 380px;
 }
 
 .cta-button:hover {

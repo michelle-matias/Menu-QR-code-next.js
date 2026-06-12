@@ -34,18 +34,18 @@ export const Sidebar: React.FC = () => {
             <i className="fas fa-chart-line"></i> Estatístics
           </Link>
         </li>
-        <li className={isActive('/dashboard/menu') ? 'active' : ''}>
-          <Link href="/dashboard/menu">
+        <li className={isActive('/menu') ? 'active' : ''}>
+          <Link href="/menu">
             <i className="fas fa-bars"></i> Menu editor
           </Link>
         </li>
-        <li className={isActive('/dashboard/qr') ? 'active' : ''}>
-          <Link href="/dashboard/qr">
+        <li className={isActive('/qr') ? 'active' : ''}>
+          <Link href="/qr">
             <i className="fas fa-qrcode"></i> QR code
           </Link>
         </li>
-        <li className={isActive('/dashboard/orders') ? 'active' : ''}>
-          <Link href="/dashboard/orders">
+        <li className={isActive('/orders') ? 'active' : ''}>
+          <Link href="/orders">
             <i className="fas fa-clipboard-list"></i> Orders
           </Link>
         </li>
