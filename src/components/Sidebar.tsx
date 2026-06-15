@@ -54,7 +54,7 @@ export const Sidebar: React.FC = () => {
       <div className="section-title">ACCOUNT</div>
       <ul>
         <li>
-          <Link href="#">
+          <Link href="/profile">
             <i className="far fa-user"></i> Profile
           </Link>
         </li>

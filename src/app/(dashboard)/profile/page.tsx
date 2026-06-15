@@ -8,7 +8,7 @@ export default function Profile() {
     const { user } = useAuth();
 
     // Estado dos campos editáveis
-    const [displayName, setDisplayName] = useState(user?.user_metadata?.full_name || '');
+    const [displayName, setDisplayName] = useState(user?.user_metadata?.display_name || '');
     const [email, setEmail] = useState(user?.email || '');
     const [novaPassword, setNovaPassword] = useState('');
     const [confirmarPassword, setConfirmarPassword] = useState('');
@@ -28,7 +28,7 @@ export default function Profile() {
 
         const { error } = await supabase.auth.updateUser({
             email,
-            data: { full_name: displayName },
+            data: { display_name: displayName },
         });
 
         if (error) {
@@ -75,69 +75,69 @@ export default function Profile() {
 
     return (
         <div style={css.pagina}>
-
             <h2 style={css.titulo}>Perfil</h2>
 
-            {/* --- Secção: Dados da conta --- */}
-            <div style={css.cartao}>
-                <h3 style={css.subtitulo}>Dados da conta</h3>
+            <div style={css.zonacartoes}>
+                {/* --- Secção: Dados da conta --- */}
+                <div style={css.cartao}>
+                    <h3 style={css.subtitulo}>Dados da conta</h3>
 
-                <label style={css.label}>Nome</label>
-                <input
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                    style={css.input}
-                    placeholder="O teu nome"
-                />
+                    <label style={css.label}>Nome</label>
+                    <input
+                        value={displayName}
+                        onChange={(e) => setDisplayName(e.target.value)}
+                        style={css.input}
+                        placeholder="O teu nome"
+                    />
 
-                <label style={css.label}>Email</label>
-                <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={css.input}
-                    placeholder="O teu email"
-                />
+                    <label style={css.label}>Email</label>
+                    <input
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        style={css.input}
+                        placeholder="O teu email"
+                    />
 
-                {mensagemPerfil && (
-                    <p style={erroPerfil ? css.erro : css.sucesso}>{mensagemPerfil}</p>
-                )}
+                    {mensagemPerfil && (
+                        <p style={erroPerfil ? css.erro : css.sucesso}>{mensagemPerfil}</p>
+                    )}
 
-                <button onClick={guardarPerfil} style={css.botao}>
-                    Guardar alterações
-                </button>
+                    <button onClick={guardarPerfil} style={css.botao}>
+                        Guardar alterações
+                    </button>
+                </div>
+
+                {/* --- Secção: Alterar password --- */}
+                <div style={css.cartao}>
+                    <h3 style={css.subtitulo}>Alterar password</h3>
+
+                    <label style={css.label}>Nova password</label>
+                    <input
+                        type="password"
+                        value={novaPassword}
+                        onChange={(e) => setNovaPassword(e.target.value)}
+                        style={css.input}
+                        placeholder="Nova password"
+                    />
+
+                    <label style={css.label}>Confirmar password</label>
+                    <input
+                        type="password"
+                        value={confirmarPassword}
+                        onChange={(e) => setConfirmarPassword(e.target.value)}
+                        style={css.input}
+                        placeholder="Confirmar password"
+                    />
+
+                    {mensagemPassword && (
+                        <p style={erroPassword ? css.erro : css.sucesso}>{mensagemPassword}</p>
+                    )}
+
+                    <button onClick={alterarPassword} style={css.botao}>
+                        Alterar password
+                    </button>
+                </div>
             </div>
-
-            {/* --- Secção: Alterar password --- */}
-            <div style={css.cartao}>
-                <h3 style={css.subtitulo}>Alterar password</h3>
-
-                <label style={css.label}>Nova password</label>
-                <input
-                    type="password"
-                    value={novaPassword}
-                    onChange={(e) => setNovaPassword(e.target.value)}
-                    style={css.input}
-                    placeholder="Nova password"
-                />
-
-                <label style={css.label}>Confirmar password</label>
-                <input
-                    type="password"
-                    value={confirmarPassword}
-                    onChange={(e) => setConfirmarPassword(e.target.value)}
-                    style={css.input}
-                    placeholder="Confirmar password"
-                />
-
-                {mensagemPassword && (
-                    <p style={erroPassword ? css.erro : css.sucesso}>{mensagemPassword}</p>
-                )}
-
-                <button onClick={alterarPassword} style={css.botao}>
-                    Alterar password
-                </button>
-            </div>
-
         </div>
     );
 }
@@ -149,7 +149,12 @@ export default function Profile() {
 const css: Record<string, React.CSSProperties> = {
     pagina: {
         padding: '40px 32px',
-        maxWidth: '600px',
+    },
+    zonacartoes: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '24px',
+        alignItems: 'flex-start',
     },
     titulo: {
         fontSize: '1.8rem',
@@ -166,6 +171,7 @@ const css: Record<string, React.CSSProperties> = {
         display: 'flex',
         flexDirection: 'column',
         gap: '8px',
+        flex: 1,
     },
     subtitulo: {
         fontSize: '1.1rem',
