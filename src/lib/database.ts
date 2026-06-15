@@ -85,8 +85,8 @@ export const getOrdersForDateRange = async (
     .from('pedidos')
     .select('*')
     .eq('user_id', userId)
-    .gte('created_at', from.toISOString())
-    .lt('created_at', to.toISOString());
+    .gte('criado_em', from.toISOString())
+    .lt('criado_em', to.toISOString());
 
   if (error) throw error;
   return data || [];
@@ -121,11 +121,13 @@ export const getTopDishes = async (userId: string, limit = 5): Promise<TopDish[]
 
   if (error) throw error;
 
+
   // Count dish occurrences from all order items
   const dishCounts: Record<string, number> = {};
   for (const order of data || []) {
+    const rawItens = typeof order.itens === 'string' ? JSON.parse(order.itens) : order.itens;
     const items: { nome?: string; name?: string; qty?: number }[] =
-      Array.isArray(order.itens) ? order.itens : [];
+        Array.isArray(rawItens) ? rawItens : [];
     for (const item of items) {
       const name = item.nome || item.name || 'Unknown';
       dishCounts[name] = (dishCounts[name] || 0) + (item.qty || 1);
@@ -149,8 +151,8 @@ export const getHourlyOrderCounts = async (userId: string, date: Date): Promise<
   // Group by hour
   const hourCounts: Record<number, number> = {};
   for (const order of orders) {
-    if (order.created_at) {
-      const hour = new Date(order.created_at).getHours();
+    if (order.criado_em) {
+      const hour = new Date(order.criado_em).getHours();
       hourCounts[hour] = (hourCounts[hour] || 0) + 1;
     }
   }
