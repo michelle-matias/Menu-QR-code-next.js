@@ -27,6 +27,7 @@ export interface Order {
   itens: OrderItem[];
   user_id: string;
   created_at: string;
+  criado_em: string;
 }
 
 export interface UserMetadata {
