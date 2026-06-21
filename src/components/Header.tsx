@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ isDashboard = false }) => {
       </div>
       <div className={isDashboard ? "nav-right" : "auth-buttons"}>
         {isDashboard ? (
-          <Link href="/dashboard" className="btn-home-nav">
+          <Link href="/" className="btn-home-nav">
             Main Page
           </Link>
         ) : user ? (

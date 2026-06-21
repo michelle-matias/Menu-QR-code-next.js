@@ -59,11 +59,6 @@ export const Sidebar: React.FC = () => {
           </Link>
         </li>
         <li>
-          <Link href="#">
-            <i className="fas fa-cog"></i> Settings
-          </Link>
-        </li>
-        <li>
           <a href="#logout" onClick={handleSignOut} style={{ color: '#d32f2f' }}>
             <i className="fas fa-sign-out-alt"></i> Sair
           </a>

@@ -89,7 +89,7 @@ export default function Register() {
             <i className="fas fa-qrcode"></i> Menu4U
           </Link>
         </div>
-        <Link href="/" className="auth-btn-main-page">
+        <Link href="/" className="btn-home-nav">
           Home Page
         </Link>
       </header>
